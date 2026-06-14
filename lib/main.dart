@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
 
-void
-main() {
-  runApp(
-    const MyApp(),
-  );
-}
 
 class MyApp
     extends
@@ -32,17 +26,17 @@ class MyApp
           ),
         ),
       ),
-      home: const MyHomePage(
+      home: const HomePage(
         title: 'Pescai',
       ),
     );
   }
 }
 
-class MyHomePage
+class HomePage
     extends
         StatefulWidget {
-  const MyHomePage({
+  const HomePage({
     super.key,
     required this.title,
   });
@@ -52,13 +46,13 @@ class MyHomePage
 
   @override
   State<
-    MyHomePage
+    HomePage
   >
   createState() =>
-      _MyHomePageState();
+      _HomePageState();
 }
 
-class _MyHomePageState extends State < MyHomePage > with  TickerProviderStateMixin {
+class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
   late TabController
   aba;
   int carrin = 0;
