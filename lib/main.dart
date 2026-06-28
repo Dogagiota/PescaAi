@@ -15,16 +15,12 @@ class MyApp
     context,
   ) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Pescai',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(
-            255,
-            39,
-            187,
-            26,
-          ),
-        ),
+      brightness: Brightness.dark,
+      primaryColor: Colors.lightBlue[800],
+      secondaryHeaderColor: Colors.amber,
       ),
       home: const HomePage(
         title: 'Pescai',

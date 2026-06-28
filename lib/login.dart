@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
-import 'main.dart';
+import 'carregamento.dart';
 
 
 void main() {
-  runApp(const MaterialApp(
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    theme: ThemeData(
+    brightness: Brightness.dark,
+    primaryColor: Colors.lightBlue[800],
+    secondaryHeaderColor: Colors.amber,
+    ),
     home: LoginPage(),
   ));
 }
@@ -15,7 +21,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pescai'),
+        title: const Text('Pescai')
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -40,7 +46,7 @@ class LoginPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const MyApp(),
+                    builder: (context) => const CarregamentoPage(),
                   ),
                 );
               },
