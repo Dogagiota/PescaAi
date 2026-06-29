@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'carregamento.dart';
 
-
 void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    theme: ThemeData(
-    brightness: Brightness.dark,
-    primaryColor: Colors.lightBlue[800],
-    secondaryHeaderColor: Colors.amber,
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.lightBlue,
+          brightness: Brightness.dark,
+        ),
+      ),
+      home: const LoginPage(),
     ),
-    home: LoginPage(),
-  ));
+  );
 }
 
 class LoginPage extends StatelessWidget {
@@ -19,25 +23,60 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cores = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pescai')
+        title: const Text('Pescai'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const TextField(
+            TextField(
               decoration: InputDecoration(
                 labelText: 'Email',
+                prefixIcon: Icon(
+                  Icons.email,
+                  color: cores.primary,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(18),
+                  borderSide: BorderSide(
+                    color: cores.primary,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(18),
+                  borderSide: BorderSide(
+                    color: cores.primary,
+                    width: 2,
+                  ),
+                ),
               ),
             ),
-            const SizedBox(height: 10),
-            const TextField(
-              obscureText: true,
+            const SizedBox(height: 15),
+            TextField(
               decoration: InputDecoration(
                 labelText: 'Senha',
+                prefixIcon: Icon(
+                  Icons.lock,
+                  color: cores.primary,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(18),
+                  borderSide: BorderSide(
+                    color: cores.primary,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(18),
+                  borderSide: BorderSide(
+                    color: cores.primary,
+                    width: 2,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 20),
