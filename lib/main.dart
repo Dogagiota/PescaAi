@@ -3,155 +3,116 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'services/carrinho.dart';
+import 'carrinho_page.dart';
 
-class MyApp
-    extends
-        StatelessWidget {
-  const MyApp({
-    super.key,
-  });
+
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
-  Widget
-  build(
-    BuildContext
-    context,
-  ) {
+  Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Pescai',
       theme: ThemeData(
-      brightness: Brightness.dark,
-      primaryColor: Colors.lightBlue[800],
-      secondaryHeaderColor: Colors.amber,
+        brightness: Brightness.dark,
+        primaryColor: Colors.lightBlue[800],
+        secondaryHeaderColor: Colors.amber,
       ),
-      home: const HomePage(
-        title: 'Pescai',
-      ),
+      home: const HomePage(title: 'Pescai'),
     );
   }
 }
 
-class HomePage
-    extends
-        StatefulWidget {
-  const HomePage({
-    super.key,
-    required this.title,
-  });
-  final String
-  title;
+class HomePage extends StatefulWidget {
+  const HomePage({super.key, required this.title});
+  final String title;
   @override
-  State<
-    HomePage
-  >
-  createState() =>
-      _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
-
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late TabController aba;
 
   int carrin = 0;
   double valorcarrin = 0;
 
-
   Future<void> carregarCarrinho() async {
-
     final itens = await Carrinho.pegar();
 
     setState(() {
-
       carrin = itens.length;
 
-      valorcarrin = itens.fold(
-        0.0,
-        (total, item) => total + item["valor"],
-      );
-
+      valorcarrin = itens.fold(0.0, (total, item) => total + item["valor"]);
     });
-
   }
-
 
   void addcarrin(String produto, double valor) async {
-
-
-    await Carrinho.adicionar(
-      produto,
-      valor,
-    );
-
+    await Carrinho.adicionar(produto, valor);
 
     setState(() {
-
       carrin++;
       valorcarrin += valor;
-
     });
 
-
-    ScaffoldMessenger.of(this.context).showSnackBar(
-
-      SnackBar(
-
-        content: Text(
-          '$produto adicionado ao carrinho',
-        ),
-
-      ),
-
-    );
-
+    ScaffoldMessenger.of(
+      this.context,
+    ).showSnackBar(SnackBar(content: Text('$produto adicionado ao carrinho')));
   }
-
 
   @override
   void initState() {
-
     super.initState();
 
-
-    aba = TabController(
-      length: 3,
-      vsync: this,
-    );
-
+    aba = TabController(length: 3, vsync: this);
 
     carregarCarrinho();
-
   }
-
 
   @override
   void dispose() {
-
     aba.dispose();
 
     super.dispose();
-
   }
+
   @override
-  Widget
-  build(
-    BuildContext
-    context,
-  ) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Carrinho: ($carrin) | R\$ ${valorcarrin.toStringAsFixed(2)}'),
+        title: Text(
+          'Carrinho: ($carrin) | R\$ ${valorcarrin.toStringAsFixed(2)}',
+        ),
+
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+
+            onPressed: () {
+              Navigator.push(
+                context,
+
+                MaterialPageRoute(builder: (context) => const CarrinhoPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: TabBarView(
         controller: aba,
         children: [
-          Align(alignment: Alignment.topCenter,
-            child: Column(mainAxisSize: MainAxisSize.min,
+          Align(
+            alignment: Alignment.topCenter,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Row(crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Vara de até 8kg"),
                           SizedBox(height: 8),
@@ -159,7 +120,8 @@ class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
                           Text("Preço: R\$ 150"),
                           SizedBox(height: 8),
                           ElevatedButton(
-                            onPressed: () => addcarrin('Vara Modelo Alpha', 150),
+                            onPressed: () =>
+                                addcarrin('Vara Modelo Alpha', 150),
                             child: Text('Adicionar ao carrinho'),
                           ),
                         ],
@@ -167,7 +129,8 @@ class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
                     ),
                     SizedBox(width: 16),
                     Expanded(
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Vara de até 20kg"),
                           SizedBox(height: 8),
@@ -175,7 +138,8 @@ class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
                           Text("Preço: R\$ 220"),
                           SizedBox(height: 8),
                           ElevatedButton(
-                            onPressed: () => addcarrin('Vara Modelo Titan', 220),
+                            onPressed: () =>
+                                addcarrin('Vara Modelo Titan', 220),
                             child: Text('Adicionar ao carrinho'),
                           ),
                         ],
@@ -184,10 +148,12 @@ class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
                   ],
                 ),
                 SizedBox(height: 16),
-                Row(crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Vara de até 12kg"),
                           SizedBox(height: 8),
@@ -203,7 +169,8 @@ class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
                     ),
                     SizedBox(width: 16),
                     Expanded(
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Vara de até 25kg"),
                           SizedBox(height: 8),
@@ -211,7 +178,8 @@ class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
                           Text("Preço: R\$ 300"),
                           SizedBox(height: 8),
                           ElevatedButton(
-                            onPressed: () => addcarrin('Vara Modelo Carbon X', 300),
+                            onPressed: () =>
+                                addcarrin('Vara Modelo Carbon X', 300),
                             child: Text('Adicionar ao carrinho'),
                           ),
                         ],
@@ -222,13 +190,17 @@ class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
               ],
             ),
           ),
-          Align(alignment: Alignment.topCenter,
-            child: Column(mainAxisSize: MainAxisSize.min,
+          Align(
+            alignment: Alignment.topCenter,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Row(crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Molinete de até 5kg de arrasto"),
                           SizedBox(height: 8),
@@ -244,7 +216,8 @@ class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
                     ),
                     SizedBox(width: 16),
                     Expanded(
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Carretilha de até 5kg de arrasto"),
                           SizedBox(height: 8),
@@ -252,7 +225,8 @@ class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
                           Text("Preço: R\$ 100"),
                           SizedBox(height: 8),
                           ElevatedButton(
-                            onPressed: () => addcarrin('Carretilha Modelo B', 100),
+                            onPressed: () =>
+                                addcarrin('Carretilha Modelo B', 100),
                             child: Text('Adicionar ao carrinho'),
                           ),
                         ],
@@ -261,10 +235,12 @@ class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
                   ],
                 ),
                 SizedBox(height: 16),
-                Row(crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Molinete de até 10kg de arrasto"),
                           SizedBox(height: 8),
@@ -272,7 +248,8 @@ class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
                           Text("Preço: R\$ 120"),
                           SizedBox(height: 8),
                           ElevatedButton(
-                            onPressed: () => addcarrin('Molinete Modelo C', 120),
+                            onPressed: () =>
+                                addcarrin('Molinete Modelo C', 120),
                             child: Text('Adicionar ao carrinho'),
                           ),
                         ],
@@ -280,7 +257,8 @@ class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
                     ),
                     SizedBox(width: 16),
                     Expanded(
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Carretilha de até 10kg de arrasto"),
                           SizedBox(height: 8),
@@ -288,7 +266,8 @@ class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
                           Text("Preço: R\$ 130"),
                           SizedBox(height: 8),
                           ElevatedButton(
-                            onPressed: () => addcarrin('Carretilha Modelo D', 130),
+                            onPressed: () =>
+                                addcarrin('Carretilha Modelo D', 130),
                             child: Text('Adicionar ao carrinho'),
                           ),
                         ],
@@ -299,24 +278,17 @@ class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
               ],
             ),
           ),
-          Align(alignment: Alignment.topCenter,
-            child: 
-              Text("Outros"),
-          ),
+          Align(alignment: Alignment.topCenter, child: Text("Outros")),
         ],
       ),
       bottomNavigationBar: TabBar(
         controller: aba,
         tabs: [
+          Tab(icon: Image.asset('web/icons/vara.png', width: 48, height: 48)),
           Tab(
-            icon: Image.asset('web/icons/vara.png',width: 48,height: 48,),
+            icon: Image.asset('web/icons/molinete.png', width: 48, height: 48),
           ),
-          Tab(
-            icon: Image.asset('web/icons/molinete.png',width: 48,height: 48,),
-          ),
-          Tab(
-            icon: Image.asset('web/icons/outros.png',width: 48,height: 48,),
-          ),
+          Tab(icon: Image.asset('web/icons/outros.png', width: 48, height: 48)),
         ],
       ),
     );

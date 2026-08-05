@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'carregamento.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -20,15 +23,12 @@ void main() {
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     final cores = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pescai'),
-      ),
+      appBar: AppBar(title: const Text('Pescai')),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -37,22 +37,14 @@ class LoginPage extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 labelText: 'Email',
-                prefixIcon: Icon(
-                  Icons.email,
-                  color: cores.primary,
-                ),
+                prefixIcon: Icon(Icons.email, color: cores.primary),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
-                  borderSide: BorderSide(
-                    color: cores.primary,
-                  ),
+                  borderSide: BorderSide(color: cores.primary),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
-                  borderSide: BorderSide(
-                    color: cores.primary,
-                    width: 2,
-                  ),
+                  borderSide: BorderSide(color: cores.primary, width: 2),
                 ),
               ),
             ),
@@ -60,22 +52,14 @@ class LoginPage extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 labelText: 'Senha',
-                prefixIcon: Icon(
-                  Icons.lock,
-                  color: cores.primary,
-                ),
+                prefixIcon: Icon(Icons.lock, color: cores.primary),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
-                  borderSide: BorderSide(
-                    color: cores.primary,
-                  ),
+                  borderSide: BorderSide(color: cores.primary),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
-                  borderSide: BorderSide(
-                    color: cores.primary,
-                    width: 2,
-                  ),
+                  borderSide: BorderSide(color: cores.primary, width: 2),
                 ),
               ),
             ),
