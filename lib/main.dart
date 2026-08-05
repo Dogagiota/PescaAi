@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'services/carrinho.dart';
 
 class MyApp
     extends
@@ -36,10 +39,8 @@ class HomePage
     super.key,
     required this.title,
   });
-
   final String
   title;
-
   @override
   State<
     HomePage
@@ -49,40 +50,88 @@ class HomePage
 }
 
 class _HomePageState extends State < HomePage > with  TickerProviderStateMixin {
-  late TabController
-  aba;
+
+  late TabController aba;
+
   int carrin = 0;
   double valorcarrin = 0;
-  void addcarrin(String produto, double valor) {
-  setState(() {
-    carrin++;
-    valorcarrin += valor;
-  });
 
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text('$produto adicionado ao carrinho'),
-    ),
-  );
-}
+
+  Future<void> carregarCarrinho() async {
+
+    final itens = await Carrinho.pegar();
+
+    setState(() {
+
+      carrin = itens.length;
+
+      valorcarrin = itens.fold(
+        0.0,
+        (total, item) => total + item["valor"],
+      );
+
+    });
+
+  }
+
+
+  void addcarrin(String produto, double valor) async {
+
+
+    await Carrinho.adicionar(
+      produto,
+      valor,
+    );
+
+
+    setState(() {
+
+      carrin++;
+      valorcarrin += valor;
+
+    });
+
+
+    ScaffoldMessenger.of(this.context).showSnackBar(
+
+      SnackBar(
+
+        content: Text(
+          '$produto adicionado ao carrinho',
+        ),
+
+      ),
+
+    );
+
+  }
+
 
   @override
-  void
-  initState() {
+  void initState() {
+
     super.initState();
+
+
     aba = TabController(
       length: 3,
       vsync: this,
     );
+
+
+    carregarCarrinho();
+
   }
+
 
   @override
-  void
-  dispose() {
-    aba.dispose();
-    super.dispose();
-  }
+  void dispose() {
 
+    aba.dispose();
+
+    super.dispose();
+
+  }
   @override
   Widget
   build(
