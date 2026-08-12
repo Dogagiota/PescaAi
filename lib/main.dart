@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'services/carrinho.dart';
 import 'carrinho_page.dart';
-
-
+import 'historico_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -87,14 +83,25 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
         actions: [
           IconButton(
-            icon: const Icon(Icons.shopping_cart),
+            icon: const Icon(Icons.history),
 
             onPressed: () {
               Navigator.push(
                 context,
+                MaterialPageRoute(builder: (context) => const HistoricoPage()),
+              );
+            },
+          ),
 
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+
+            onPressed: () async {
+              await Navigator.push(
+                context,
                 MaterialPageRoute(builder: (context) => const CarrinhoPage()),
               );
+              carregarCarrinho();
             },
           ),
         ],

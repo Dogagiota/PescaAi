@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'services/carrinho.dart';
 import 'services/banco.dart';
 
-
 class CarrinhoPage extends StatefulWidget {
   const CarrinhoPage({super.key});
 
@@ -80,12 +79,7 @@ class _CarrinhoPageState extends State<CarrinhoPage> {
                   child: ElevatedButton(
                     onPressed: () async {
                       try {
-                        for (var item in itens) {
-                          await Banco.instance.adicionarCompra(
-                            item["produto"],
-                            item["valor"],
-                          );
-                        }
+                        await Banco.instance.adicionarCompra(itens, total);
 
                         await Carrinho.limpar();
 
