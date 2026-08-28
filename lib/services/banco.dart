@@ -67,10 +67,10 @@ class Banco {
 
   Future<void> atualizarBanco(
     Database db,
-    int oldVersion,
-    int newVersion,
+    int versaoAntiga,
+    int versaoNova,
   ) async {
-    if (oldVersion < 2) {
+    if (versaoAntiga < 2) {
       await db.execute('''
         ALTER TABLE compras RENAME TO compras_antigas
       ''');
@@ -117,7 +117,7 @@ class Banco {
       await db.execute('DROP TABLE compras_antigas');
     }
 
-    if (oldVersion < 3) {
+    if (versaoAntiga < 3) {
       await db.execute('''
         CREATE TABLE produtos (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
