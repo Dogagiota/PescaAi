@@ -26,7 +26,7 @@ class Banco {
 
     return await openDatabase(
       caminho,
-      version: 2,
+      version: 3,
       onCreate: criarBanco,
       onUpgrade: atualizarBanco,
     );
@@ -51,6 +51,16 @@ class Banco {
         produto TEXT NOT NULL,
         valor REAL NOT NULL,
         FOREIGN KEY (compra_id) REFERENCES compras(id)
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE produtos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nome TEXT NOT NULL,
+        categoria TEXT NOT NULL,
+        descricao TEXT NOT NULL,
+        preco REAL NOT NULL
       )
     ''');
   }
@@ -106,6 +116,18 @@ class Banco {
 
       await db.execute('DROP TABLE compras_antigas');
     }
+
+    if (oldVersion < 3) {
+      await db.execute('''
+        CREATE TABLE produtos (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          nome TEXT NOT NULL,
+          categoria TEXT NOT NULL,
+          descricao TEXT NOT NULL,
+          preco REAL NOT NULL
+        )
+      ''');
+    }
   }
 
   Future<void> adicionarCompra(
@@ -160,5 +182,75 @@ class Banco {
     }
 
     return resultado;
+  }
+
+  // =====================================================
+  // PRODUTOS
+  // =====================================================
+
+  // CREATE
+  Future<void> adicionarProduto(
+    String nome,
+    String categoria,
+    String descricao,
+    double preco,
+  ) async {
+    final db = await instance.database;
+
+    await db.insert(
+      'produtos',
+      {
+        'nome': nome,
+        'categoria': categoria,
+        'descricao': descricao,
+        'preco': preco,
+      },
+    );
+  }
+
+  // READ
+  Future<List<Map<String, dynamic>>> listarProdutos() async {
+    final db = await instance.database;
+
+    return await db.query(
+      'produtos',
+      orderBy: 'id DESC',
+    );
+  }
+
+  // UPDATE
+  Future<void> editarProduto(
+    int id,
+    String nome,
+    String categoria,
+    String descricao,
+    double preco,
+  ) async {
+    final db = await instance.database;
+
+    await db.update(
+      'produtos',
+      {
+        'nome': nome,
+        'categoria': categoria,
+        'descricao': descricao,
+        'preco': preco,
+      },
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  // DELETE
+  Future<void> excluirProduto(
+    int id,
+  ) async {
+    final db = await instance.database;
+
+    await db.delete(
+      'produtos',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 }

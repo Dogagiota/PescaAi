@@ -80,21 +80,19 @@ class _CarrinhoPageState extends State<CarrinhoPage> {
                     onPressed: () async {
                       try {
                         await Banco.instance.adicionarCompra(itens, total);
-
                         await Carrinho.limpar();
+                        if (!context.mounted) return;
 
                         setState(() {
                           itens.clear();
 
                           total = 0;
                         });
-
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("Compra realizada!")),
                         );
                       } catch (e) {
-                        print("ERRO NA COMPRA: $e");
-
+                        if (!context.mounted) return;
                         ScaffoldMessenger.of(
                           context,
                         ).showSnackBar(SnackBar(content: Text("Erro: $e")));
