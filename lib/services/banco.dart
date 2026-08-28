@@ -183,10 +183,7 @@ class Banco {
 
     return resultado;
   }
-
-  // =====================================================
-  // PRODUTOS
-  // =====================================================
+ // PRODUTOS
 
   // CREATE
   Future<void> adicionarProduto(
