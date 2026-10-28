@@ -39,6 +39,9 @@ dependencies:
   shared_preferences: ^2.5.5
   sqflite_common_ffi: ^2.4.2
   flutter_native_splash: ^2.4.8
+  http: ^1.6.0
+  crypto: ^3.0.8
+  emailjs: ^4.0.0
 
 dev_dependencies:
   flutter_test:

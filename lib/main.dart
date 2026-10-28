@@ -1,8 +1,12 @@
+
 import 'package:flutter/material.dart';
 import 'services/carrinho.dart';
 import 'services/banco.dart';
 import 'carrinho_page.dart';
 import 'historico_page.dart';
+import 'login.dart';
+import 'login_vendedor.dart';
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -16,11 +20,19 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         primaryColor: Colors.lightBlue[800],
         secondaryHeaderColor: Colors.amber,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.lightBlue,
+          brightness: Brightness.dark,
+        ),
       ),
-      home: const HomePage(title: 'Pescai'),
+      home: const LoginPage(),
+      routes: {
+        '/login-vendedor': (context) => const LoginVendedorPage(),
+      },
     );
   }
 }
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
